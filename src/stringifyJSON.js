@@ -20,7 +20,7 @@ var stringifyJSON = function(obj) {
   }
 
   if (Array.isArray(obj)) {
-    for (var i = 0, i < obj.length; i++) {
+    for (var i = 0; i < obj.length; i++) {
       if (i === obj.length - 1) {
         stringified += stringifyJSON(obj[i]);
 
@@ -31,11 +31,13 @@ var stringifyJSON = function(obj) {
     return '[' + stringified + ']';
   }
 
-  //TODO: implement other data types passed into an array
-  //boolean
-  //number
-  //string
-  //nulls
+  if (typeof obj === "string"){
+  	return '"' + obj + '"';
+  }
+
+  if (typeof obj === "boolean" || typeof obj === "number" || typeof obj === null ){
+  	return '' + obj;	
+  }
 
 
 
