@@ -4,7 +4,15 @@
 // };
 
 // But instead we're going to implement it from scratch:
-var getElementsByClassName = function(className
-){
-  // your code here
+var getElementsByClassName = function(className) {
+
+	//use following
+	//document.body, element.childNodes, element.classList
+
+	//create empty array
+	//per testing spec get document.body element
+	//push document.body element into array
+	//recursively push document.body child elements and grandchildren elements that contains 'className'
+
+	//return array
 };
