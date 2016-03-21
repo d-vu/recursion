@@ -4,20 +4,36 @@
 var stringifyJSON = function(obj) {
   var stringified = "";
 
-  if (typeof obj === "boolean" || typeof obj === "number" || obj === null ){
-  	return '' + obj;	
+  if (typeof obj === "boolean" || typeof obj === "number" || obj === null) {
+    return '' + obj;
   }
-
-  if (typeof obj === "object") {
-    for (var key in obj) {
-      if (typeof obj[key] === "object") {
-        stringified += '"' + key + '":' + stringifyJSON(obj[key]);
-      } else if (typeof obj[key] === "function") {
-        stringified += "";
-      } else if (typeof obj[key] === 'string') {
-        stringified += '"' + key + '":' + '"' + obj[key] + '"';
+  if (typeof obj === "undefined" || typeof obj === "function") {
+    return;
+  }
+  if (obj.constructor === Object) {
+    var listOfKeys = Object.keys(obj);
+    for (var i = 0; i < listOfKeys.length; i++) {
+      if (i === listOfKeys.length - 1) {
+        if (typeof obj[listOfKeys[i]] === "object") {
+          stringified += '"' + listOfKeys[i] + '":' + stringifyJSON(obj[listOfKeys[i]]);
+        } else if (typeof obj[listOfKeys[i]] === "function" || typeof obj[listOfKeys[i]] === "undefined") {
+          stringified += "";
+        } else if (typeof obj[listOfKeys[i]] === 'string') {
+          stringified += '"' + listOfKeys[i] + '":' + '"' + obj[listOfKeys[i]] + '"';
+        } else {
+          stringified += '"' + listOfKeys[i] + '":' + stringifyJSON(obj[listOfKeys[i]]);
+        }
       } else {
-        stringified += '"' + key + '":' + obj[key];
+        if (typeof obj[listOfKeys[i]] === "object") {
+          stringified += '"' + listOfKeys[i] + '":' + stringifyJSON(obj[listOfKeys[i]]) + ',';
+        } else if (typeof obj[listOfKeys[i]] === "function" || typeof obj[listOfKeys[i]] === "undefined") {
+          stringified += "";
+        } else if (typeof obj[listOfKeys[i]] === 'string') {
+          stringified += '"' + listOfKeys[i] + '":' + '"' + obj[listOfKeys[i]] + '",';
+        } else {
+          stringified += '"' + listOfKeys[i] + '":' + stringifyJSON(obj[listOfKeys[i]]) + ',';
+        }
+
       }
     }
     return '{' + stringified + '}';
@@ -35,12 +51,7 @@ var stringifyJSON = function(obj) {
     return '[' + stringified + ']';
   }
 
-  if (typeof obj === "string"){
-  	return '"' + obj + '"';
+  if (typeof obj === "string") {
+    return '"' + obj + '"';
   }
-
-
-
-
-
 };
